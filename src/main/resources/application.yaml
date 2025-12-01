@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: redis-stack
+server:
+  port: 8080
+  address: 0.0.0.0
+logging:
+  level:
+    root: INFO
+    fr.gwen.redis_stack: DEBUG
+    io.lettuce: DEBUG
+    io.lettuce.core.protocol: DEBUG
+    org.springframework.data.redis: DEBUG
