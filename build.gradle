@@ -36,6 +36,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation("com.redis.om:redis-om-spring:2.0.0")
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    annotationProcessor "com.redis.om:redis-om-spring:2.0.0"
 }
 
 tasks.named('test') {
