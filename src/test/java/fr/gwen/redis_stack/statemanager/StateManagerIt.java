@@ -20,7 +20,7 @@ public class StateManagerIt extends RedisTestBase {
 
   @BeforeEach
   void setupForTest() {
-    final var doss = List.of(Dossier.builder().id("tata").status("EN_ATTENTE").build(),
+    final var doss = List.of(Dossier.builder().id("tata").montant(10.0).status("EN_ATTENTE").build(),
         Dossier.builder().id("tutu").status("EN_ATTENTE").build(),
         Dossier.builder().id("toto").status("RIEN").montant(99.0).build());
     dossierStateManager.createAll(doss);
@@ -43,7 +43,7 @@ public class StateManagerIt extends RedisTestBase {
 
     // WHEN
     final var result = dossierStateManager.search(
-        SearchCriteriaBuilder.<Dossier>builder().contains(Dossier$.STATUS, "ATTE").build());
+        SearchCriteriaBuilder.of(Dossier.class).contains(Dossier$.STATUS, "ATTE").build());
 
     // THEN
     assertThat(result.size()).isEqualTo(2);
@@ -55,7 +55,7 @@ public class StateManagerIt extends RedisTestBase {
 
     // WHEN
     final var result = dossierStateManager.search(
-        SearchCriteriaBuilder.<Dossier>builder().and().contains(Dossier$.STATUS, "ATTE")
+        SearchCriteriaBuilder.of(Dossier.class).and().contains(Dossier$.STATUS, "ATTE")
             .between(Dossier$.MONTANT, 1.0, 100.0).build());
 
     // THEN
@@ -65,10 +65,11 @@ public class StateManagerIt extends RedisTestBase {
   @Test
   void test_nested_conditions_builder() {
     // GIVEN
-    // évalué comme: status CONTAINS "TATA" OR (montant BETWEEN 1.0 AND 100.0 AND status CONTAINS "RI")
-    final var sc = SearchCriteriaBuilder.<Dossier>builder()
+    // évalué comme: status CONTAINS "TATA" OR (montant BETWEEN 1.0 .. 100.0 AND status CONTAINS "RI")
+    // requête redis sous jacente -> "FT.SEARCH" "idx:dossier" "(( @status:*DSKLDSKLDKLSQK*)|(( @montant:[1.0 100.0]) ( @status:*RI*)))" "LIMIT" "0" "10000" "DIALECT" "2"
+    final var sc = SearchCriteriaBuilder.of(Dossier.class)
         .or()
-        .contains(Dossier$.STATUS, "TATA")
+        .contains(Dossier$.STATUS, "DSKLDSKLDKLSQK")
         .nested(
             ac -> ac.and()
                 .between(Dossier$.MONTANT, 1.0, 100.0)

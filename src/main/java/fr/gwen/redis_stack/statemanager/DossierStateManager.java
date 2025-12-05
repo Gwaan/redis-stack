@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DossierStateManager implements StateManagerService<String, Dossier> {
 
-  private final EntityStream es;
   private final DossierRepository dossierRepository;
 
   @Override
@@ -38,6 +37,6 @@ public class DossierStateManager implements StateManagerService<String, Dossier>
 
   @Override
   public List<Dossier> search(SearchCriteria<Dossier> criteria) {
-    return es.of(Dossier.class).filter(criteria.toSearchPredicate()).collect(Collectors.toList());
+    return  dossierRepository.search(criteria).stream().toList();
   }
 }

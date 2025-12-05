@@ -26,7 +26,7 @@ public class DossierController {
 
   @GetMapping("pred-test")
   public Iterable<Dossier> test() {
-    final var criteriaBuilder = SearchCriteriaBuilder.<Dossier>builder().and()
+    final var criteriaBuilder = SearchCriteriaBuilder.of(Dossier.class).and()
         .contains(Dossier$.STATUS, "EN_").or().equals(Dossier$.ID, "2").build();
 
     return sm.search(criteriaBuilder);

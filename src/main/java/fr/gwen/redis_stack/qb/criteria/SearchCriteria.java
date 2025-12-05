@@ -6,6 +6,8 @@ import fr.gwen.redis_stack.service.AppState;
 public sealed interface SearchCriteria<E extends AppState<?>> permits SimpleCriterion,
     GroupCriterion {
 
+  Class<E> getEntityClass();
+
   default SearchFieldPredicate<E, Object> toSearchPredicate() {
     return CriteriaToPredicateConverter.convert(this);
   }

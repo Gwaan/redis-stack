@@ -27,12 +27,14 @@ public class SearchCriteriaBuilder<E extends AppState<?>> {
 
   private final List<SearchCriteria<E>> criteria = new ArrayList<>();
   private GroupCriterion.LogicalOperator operator = GroupCriterion.LogicalOperator.AND;
+  private final Class<E> entityClass;
 
-  private SearchCriteriaBuilder() {
+  private SearchCriteriaBuilder(Class<E> entityClass) {
+    this.entityClass = entityClass;
   }
 
-  public static <E extends AppState<?>> SearchCriteriaBuilder<E> builder() {
-    return new SearchCriteriaBuilder<>();
+  public static <E extends AppState<?>> SearchCriteriaBuilder<E> of(Class<E> entityClass) {
+    return new SearchCriteriaBuilder<>(entityClass);
   }
 
   public SearchCriteriaBuilder<E> and() {
@@ -46,114 +48,120 @@ public class SearchCriteriaBuilder<E extends AppState<?>> {
   }
 
   public SearchCriteriaBuilder<E> nested(Consumer<SearchCriteriaBuilder<E>> nestedBuilder) {
-    var subBuilder = SearchCriteriaBuilder.<E>builder();
+    var subBuilder = new SearchCriteriaBuilder<>(entityClass);
     nestedBuilder.accept(subBuilder);
     criteria.add(subBuilder.build());
     return this;
   }
 
   public <T> SearchCriteriaBuilder<E> equals(MetamodelField<E, T> field, T value) {
-    criteria.add(new SimpleCriterion<>(new EqualsCriterion<>(field, value)));
+    criteria.add(new SimpleCriterion<>(new EqualsCriterion<>(field, value), entityClass));
     return this;
   }
 
   public <T> SearchCriteriaBuilder<E> notEquals(MetamodelField<E, T> field, T value) {
-    criteria.add(new SimpleCriterion<>(new NotEqualsCriterion<>(field, value)));
+    criteria.add(new SimpleCriterion<>(new NotEqualsCriterion<>(field, value), entityClass));
     return this;
   }
 
   @SafeVarargs
   public final <T> SearchCriteriaBuilder<E> in(MetamodelField<E, T> field, T... values) {
-    criteria.add(new SimpleCriterion<>(new InCriterion<>(field, Arrays.asList(values))));
+    criteria.add(
+        new SimpleCriterion<>(new InCriterion<>(field, Arrays.asList(values)), entityClass));
     return this;
   }
 
 
   public <T> SearchCriteriaBuilder<E> in(MetamodelField<E, T> field, List<T> values) {
-    criteria.add(new SimpleCriterion<>(new InCriterion<>(field, values)));
+    criteria.add(new SimpleCriterion<>(new InCriterion<>(field, values), entityClass));
     return this;
   }
 
   @SafeVarargs
   public final <T> SearchCriteriaBuilder<E> notIn(MetamodelField<E, T> field, T... values) {
-    criteria.add(new SimpleCriterion<>(new NotInCriterion<>(field, Arrays.asList(values))));
+    criteria.add(
+        new SimpleCriterion<>(new NotInCriterion<>(field, Arrays.asList(values)), entityClass));
     return this;
   }
 
   public <T> SearchCriteriaBuilder<E> notIn(MetamodelField<E, T> field, List<T> values) {
-    criteria.add(new SimpleCriterion<>(new NotInCriterion<>(field, values)));
+    criteria.add(new SimpleCriterion<>(new NotInCriterion<>(field, values), entityClass));
     return this;
   }
 
   public <T extends Comparable<T>> SearchCriteriaBuilder<E> between(NumericField<E, T> field, T min,
       T max) {
-    criteria.add(new SimpleCriterion<>(new BetweenCriterion<>(field, min, max)));
+    criteria.add(new SimpleCriterion<>(new BetweenCriterion<>(field, min, max), entityClass));
     return this;
   }
 
   public SearchCriteriaBuilder<E> contains(TextField<E, String> field, String pattern) {
-    criteria.add(new SimpleCriterion<>(new ContainingCriterion<>(field, pattern)));
+    criteria.add(new SimpleCriterion<>(new ContainingCriterion<>(field, pattern), entityClass));
     return this;
   }
 
   public SearchCriteriaBuilder<E> notContains(TextField<E, String> field, String pattern) {
-    criteria.add(new SimpleCriterion<>(new NotContainingCriterion<>(field, pattern)));
+    criteria.add(new SimpleCriterion<>(new NotContainingCriterion<>(field, pattern), entityClass));
     return this;
   }
 
   public SearchCriteriaBuilder<E> startsWith(TextField<E, String> field, String pattern) {
     criteria.add(new SimpleCriterion<>(
-        new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.STARTS_WITH)));
+        new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.STARTS_WITH), entityClass));
     return this;
   }
 
   public SearchCriteriaBuilder<E> endsWith(TextField<E, String> field, String pattern) {
-    criteria.add(new SimpleCriterion<>(
-        new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.ENDS_WITH)));
+    criteria.add(
+        new SimpleCriterion<>(new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.ENDS_WITH),
+            entityClass));
     return this;
   }
 
   public SearchCriteriaBuilder<E> like(TextField<E, String> field, String pattern) {
     criteria.add(
-        new SimpleCriterion<>(new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.LIKE)));
+        new SimpleCriterion<>(new LikeCriterion<>(field, pattern, LikeCriterion.LikeMode.LIKE),
+            entityClass));
     return this;
   }
 
   public <T extends Comparable<T>> SearchCriteriaBuilder<E> greaterThan(NumericField<E, T> field,
       T value) {
-    criteria.add(new SimpleCriterion<>(new GreaterThanCriterion<>(field, value, false)));
+    criteria.add(
+        new SimpleCriterion<>(new GreaterThanCriterion<>(field, value, false), entityClass));
     return this;
   }
 
   public <T extends Comparable<T>> SearchCriteriaBuilder<E> greaterThanOrEqual(
       NumericField<E, T> field, T value) {
-    criteria.add(new SimpleCriterion<>(new GreaterThanCriterion<>(field, value, true)));
+    criteria.add(
+        new SimpleCriterion<>(new GreaterThanCriterion<>(field, value, true), entityClass));
     return this;
   }
 
   public <T extends Comparable<T>> SearchCriteriaBuilder<E> lessThan(NumericField<E, T> field,
       T value) {
-    criteria.add(new SimpleCriterion<>(new LessThanCriterion<>(field, value, false)));
+    criteria.add(new SimpleCriterion<>(new LessThanCriterion<>(field, value, false), entityClass));
     return this;
   }
 
   public <T extends Comparable<T>> SearchCriteriaBuilder<E> lessThanOrEqual(
       NumericField<E, T> field, T value) {
-    criteria.add(new SimpleCriterion<>(new LessThanCriterion<>(field, value, true)));
+    criteria.add(new SimpleCriterion<>(new LessThanCriterion<>(field, value, true), entityClass));
     return this;
   }
 
   public <T> SearchCriteriaBuilder<E> isMissing(MetamodelField<E, T> field) {
-    criteria.add(new SimpleCriterion<>(new IsMissingCriterion<>(field, true)));
+    criteria.add(new SimpleCriterion<>(new IsMissingCriterion<>(field, true), entityClass));
     return this;
   }
 
   public <T> SearchCriteriaBuilder<E> exists(MetamodelField<E, T> field) {
-    criteria.add(new SimpleCriterion<>(new IsMissingCriterion<>(field, false)));
+    criteria.add(new SimpleCriterion<>(new IsMissingCriterion<>(field, false), entityClass));
     return this;
   }
 
   public GroupCriterion<E> build() {
-    return new GroupCriterion<>(criteria, operator);
+    return new GroupCriterion<>(criteria, operator, entityClass);
   }
 }
