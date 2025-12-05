@@ -13,4 +13,8 @@ logging:
     root: INFO
     fr.gwen.redis_stack: DEBUG
     org.springframework.data.redis: DEBUG
+    com.redis.om.spring: TRACE
+    com.redis.om.spring.search: TRACE
+    redis.clients.jedis: DEBUG
+    io.lettuce.core.protocol: DEBUG
 

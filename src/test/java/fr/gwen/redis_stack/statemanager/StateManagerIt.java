@@ -22,14 +22,13 @@ public class StateManagerIt extends RedisTestBase {
   void setupForTest() {
     final var doss = List.of(Dossier.builder().id("tata").status("EN_ATTENTE").build(),
         Dossier.builder().id("tutu").status("EN_ATTENTE").build(),
-        Dossier.builder().id("toto").status("RIEN").build());
+        Dossier.builder().id("toto").status("RIEN").montant(99.0).build());
     dossierStateManager.createAll(doss);
   }
 
   @Test
   void should_find_one() {
     // GIVEN
-    dossierStateManager.create(Dossier.builder().id("toto").build());
 
     // WHEN
     final var result = dossierStateManager.findById("toto");
@@ -41,9 +40,6 @@ public class StateManagerIt extends RedisTestBase {
   @Test
   void should_find_multiple_statut_en_attente() {
     // GIVEN
-    dossierStateManager.create(Dossier.builder().id("tata").status("EN_ATTENTE").build());
-    dossierStateManager.create(Dossier.builder().id("tutu").status("EN_ATTENTE").build());
-    dossierStateManager.create(Dossier.builder().id("toto").status("RIEN").build());
 
     // WHEN
     final var result = dossierStateManager.search(
@@ -56,16 +52,31 @@ public class StateManagerIt extends RedisTestBase {
   @Test
   void should_find_multiple_statut_en_attente_and_Montant_Between_1_And_100() {
     // GIVEN
-    dossierStateManager.create(
-        Dossier.builder().id("tata").status("EN_ATTENTE").montant(101.0).build());
-    dossierStateManager.create(
-        Dossier.builder().id("tutu").status("EN_ATTENTE").montant(20.0).build());
-    dossierStateManager.create(Dossier.builder().id("toto").status("RIEN").build());
 
     // WHEN
     final var result = dossierStateManager.search(
-        SearchCriteriaBuilder.<Dossier>builder().contains(Dossier$.STATUS, "ATTE")
+        SearchCriteriaBuilder.<Dossier>builder().and().contains(Dossier$.STATUS, "ATTE")
             .between(Dossier$.MONTANT, 1.0, 100.0).build());
+
+    // THEN
+    assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  void test_nested_conditions_builder() {
+    // GIVEN
+    // évalué comme: status CONTAINS "TATA" OR (montant BETWEEN 1.0 AND 100.0 AND status CONTAINS "RI")
+    final var sc = SearchCriteriaBuilder.<Dossier>builder()
+        .or()
+        .contains(Dossier$.STATUS, "TATA")
+        .nested(
+            ac -> ac.and()
+                .between(Dossier$.MONTANT, 1.0, 100.0)
+                .contains(Dossier$.STATUS, "RI"))
+        .build();
+
+    // WHEN
+    final var result = dossierStateManager.search(sc);
 
     // THEN
     assertThat(result.size()).isEqualTo(1);

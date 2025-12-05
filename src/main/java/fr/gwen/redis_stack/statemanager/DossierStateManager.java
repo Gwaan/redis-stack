@@ -1,16 +1,12 @@
 package fr.gwen.redis_stack.statemanager;
 
 import com.redis.om.spring.search.stream.EntityStream;
-import fr.gwen.redis_stack.qb.criteria.CriteriaToPredicateConverter;
 import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
-import fr.gwen.redis_stack.qb.criteria.builder.SearchCriteriaBuilder;
 import fr.gwen.redis_stack.repo.Dossier;
-import fr.gwen.redis_stack.repo.Dossier$;
 import fr.gwen.redis_stack.repo.DossierRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.swing.text.html.parser.Entity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

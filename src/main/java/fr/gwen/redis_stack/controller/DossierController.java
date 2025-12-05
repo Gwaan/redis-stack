@@ -1,6 +1,5 @@
 package fr.gwen.redis_stack.controller;
 
-import fr.gwen.redis_stack.qb.criteria.CriteriaToPredicateConverter;
 import fr.gwen.redis_stack.qb.criteria.builder.SearchCriteriaBuilder;
 import fr.gwen.redis_stack.repo.Dossier;
 import fr.gwen.redis_stack.repo.Dossier$;

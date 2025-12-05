@@ -25,21 +25,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public class CriteriaToPredicateConverter {
+ class CriteriaToPredicateConverter {
 
-  public static <E extends AppState<?>> SearchFieldPredicate<E, ?> convert(
+  public static <E extends AppState<?>> SearchFieldPredicate<E, Object> convert(
       SearchCriteria<E> criteria) {
 
-    BinaryOperator<SearchFieldPredicate<E, ?>> combiner =
-        criteria.operator() == SearchCriteria.LogicalOperator.AND
-            ? (acc, predicate) -> (SearchFieldPredicate<E, ?>) acc.andAny(predicate)
-            : (acc, predicate) -> (SearchFieldPredicate<E, ?>) acc.orAny(predicate);
+    return (SearchFieldPredicate<E, Object>) switch (criteria) {
+      case SimpleCriterion<E> simple -> convertSingleCriterion(simple.criterion());
 
-    return criteria.criteria().stream().map(CriteriaToPredicateConverter::convertSingleCriterion)
-        .<SearchFieldPredicate<E, ?>>map(
-            Function.identity()) // Bricolage pour forcer la capture de la wildcard
-        .reduce(combiner).orElseThrow(() -> new IllegalStateException(
-            "At least one criteria must be specified")); // peut être un peu violent
+      case GroupCriterion<E> group -> (SearchFieldPredicate<E, Object>) group.criteria().stream()
+          .map(CriteriaToPredicateConverter::<E>convert).reduce(
+              (acc, predicate) -> group.operator() == GroupCriterion.LogicalOperator.AND
+                  ? (SearchFieldPredicate<E, Object>) acc.andAny(predicate)
+                  : (SearchFieldPredicate<E, Object>) acc.orAny(predicate))
+          .orElseThrow(() -> new IllegalStateException("At least one criteria must be specified"));
+    };
   }
 
   private static <E extends AppState<?>> SearchFieldPredicate<E, ?> convertSingleCriterion(
@@ -51,9 +51,6 @@ public class CriteriaToPredicateConverter {
         case TagField<E, ?> tagField -> ((TagField<E, Object>) tagField).eq(eq.value());
         case NumericField<E, ?> numericField ->
             ((NumericField<E, Comparable>) numericField).eq((Comparable) eq.value());
-        // ce serait bien qsu'on ne compile pas su jamais on essaie de positionner un contains()
-        // sur un index de type TAG (dc non searchable), là on le sait qu'au runtime, pas bon
-        // a voir si c'est faisable
         default -> throw new IllegalArgumentException("Unsupported field type for equals");
       };
 
