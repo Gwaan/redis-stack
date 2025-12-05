@@ -5,7 +5,7 @@ import fr.gwen.redis_stack.service.AppState;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface SearchableRedisRepository<T extends AppState<?>, ID> extends
+public interface SearchableRedisRepository<T extends AppState<ID>, ID> extends
     RedisDocumentRepository<T, ID>, SearchableRepositoryFragment<T> {
 
 }

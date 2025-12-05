@@ -37,6 +37,6 @@ public class DossierStateManager implements StateManagerService<String, Dossier>
 
   @Override
   public List<Dossier> search(SearchCriteria<Dossier> criteria) {
-    return  dossierRepository.search(criteria).stream().toList();
+    return dossierRepository.search(criteria).stream().toList();
   }
 }
