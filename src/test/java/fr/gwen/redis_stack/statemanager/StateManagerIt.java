@@ -65,7 +65,7 @@ public class StateManagerIt extends RedisTestBase {
   @Test
   void test_nested_conditions_builder() {
     // GIVEN
-    // évalué comme: status CONTAINS "TATA" OR (montant BETWEEN 1.0 .. 100.0 AND status CONTAINS "RI")
+    // évalué comme: status CONTAINS "DSKLDSKLDKLSQK" OR (montant BETWEEN 1.0 .. 100.0 AND status CONTAINS "RI")
     // requête redis sous jacente -> "FT.SEARCH" "idx:dossier" "(( @status:*DSKLDSKLDKLSQK*)|(( @montant:[1.0 100.0]) ( @status:*RI*)))" "LIMIT" "0" "10000" "DIALECT" "2"
     final var sc = SearchCriteriaBuilder.of(Dossier.class)
         .or()

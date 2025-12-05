@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 // Post processor qui ajoute au proxy d'un repo redis la capacité de recherche avancée
-// cela évite de devoir déclarer deux repositories, un pour rechercher et un autre avec le repo standard redis
-// Un repo spécialisé a juste besoin d'étendre SearchableRedisRepository pour avoir accès aux méthodes
-// du repo JPA + le report de recherche avancée
+// cela évite de devoir déclarer deux repositories, un pour rechercher et un autre avec le repo spring data redis
+// Un repo a juste besoin d'étendre SearchableRedisRepository pour avoir accès aux méthodes
+// du repo JPA + le repo de recherche
 public class SearchableRepositoryProxyPostProcessor implements BeanPostProcessor {
 
   private final EntityStream entityStream;
@@ -47,7 +47,7 @@ public class SearchableRepositoryProxyPostProcessor implements BeanPostProcessor
   }
 
   @RequiredArgsConstructor
-  private static class SearchMethodInterceptor implements MethodInterceptor {
+  private class SearchMethodInterceptor implements MethodInterceptor {
 
     private final EntityStream entityStream;
 
