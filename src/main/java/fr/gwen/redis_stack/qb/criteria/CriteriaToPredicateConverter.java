@@ -16,7 +16,7 @@ class CriteriaToPredicateConverter {
     return (SearchFieldPredicate<E, Object>) switch (criteria) {
       case SimpleCriterion<E> simple -> simple.criterion().toPredicate();
       case GroupCriterion<E> group -> (SearchFieldPredicate<E, Object>) group.criteria().stream()
-          .map(CriteriaToPredicateConverter::<E>convert).reduce(
+          .map(CriteriaToPredicateConverter::convert).reduce(
               (acc, predicate) -> group.operator() == GroupCriterion.LogicalOperator.AND
                   ? (SearchFieldPredicate<E, Object>) acc.andAny(predicate)
                   : (SearchFieldPredicate<E, Object>) acc.orAny(predicate))
