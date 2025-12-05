@@ -6,6 +6,9 @@ import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
 import fr.gwen.redis_stack.qb.criteria.builder.SearchCriteriaBuilder;
 import fr.gwen.redis_stack.repo.Dossier;
 import fr.gwen.redis_stack.repo.Dossier$;
+import fr.gwen.redis_stack.repo.DossierRepository;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.text.html.parser.Entity;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,12 @@ import org.springframework.stereotype.Service;
 public class DossierStateManager implements StateManagerService<String, Dossier> {
 
   private final EntityStream es;
+  private final DossierRepository dossierRepository;
+
+  @Override
+  public Optional<Dossier> findById(String s) {
+    return dossierRepository.findById(s);
+  }
 
   @Override
   public void deleteById(String s) {
@@ -24,10 +33,15 @@ public class DossierStateManager implements StateManagerService<String, Dossier>
 
   @Override
   public void create(Dossier state) {
+    dossierRepository.save(state);
+  }
+
+  public void createAll(List<Dossier> doss) {
+    dossierRepository.saveAll(doss);
   }
 
   @Override
-  public Iterable<Dossier> search(SearchCriteria<Dossier> criteria) {
+  public List<Dossier> search(SearchCriteria<Dossier> criteria) {
     return es.of(Dossier.class).filter(criteria.toSearchPredicate()).collect(Collectors.toList());
   }
 }
