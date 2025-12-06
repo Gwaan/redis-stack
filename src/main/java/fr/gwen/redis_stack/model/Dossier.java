@@ -1,4 +1,4 @@
-package fr.gwen.redis_stack.repo;
+package fr.gwen.redis_stack.model;
 
 import com.redis.om.spring.annotations.Document;
 import com.redis.om.spring.annotations.Indexed;

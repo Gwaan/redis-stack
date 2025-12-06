@@ -9,7 +9,7 @@ import org.springframework.boot.data.redis.autoconfigure.DataRedisRepositoriesAu
     scanBasePackages = "fr.gwen.redis_stack",
     exclude = DataRedisRepositoriesAutoConfiguration.class // <-- important
 )
-@EnableRedisDocumentRepositories(basePackages = "fr.gwen.redis_stack.repo")
+@EnableRedisDocumentRepositories(basePackages = "fr.gwen.redis_stack")
 public class RedisStackApplication {
   public static void main(String[] args) {
     SpringApplication.run(RedisStackApplication.class, args);

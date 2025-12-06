@@ -1,7 +1,7 @@
 package fr.gwen.redis_stack.statemanager;
 
 import fr.gwen.redis_stack.qb.internal.SearchCriteria;
-import fr.gwen.redis_stack.repo.Dossier;
+import fr.gwen.redis_stack.model.Dossier;
 import fr.gwen.redis_stack.repo.DossierRepository;
 import java.util.List;
 import java.util.Optional;

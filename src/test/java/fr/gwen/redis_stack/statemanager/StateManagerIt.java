@@ -2,9 +2,9 @@ package fr.gwen.redis_stack.statemanager;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import fr.gwen.redis_stack.model.Dossier$;
 import fr.gwen.redis_stack.qb.internal.SearchCriteriaBuilder;
-import fr.gwen.redis_stack.repo.Dossier;
-import fr.gwen.redis_stack.repo.Dossier$;
+import fr.gwen.redis_stack.model.Dossier;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
