@@ -1,8 +1,8 @@
-package fr.gwen.redis_stack.qb.criterion;
+package fr.gwen.redis_stack.qb.internal;
 
 import com.redis.om.spring.search.stream.predicates.SearchFieldPredicate;
 
-public sealed interface SearchCriterion<E, T> permits EqualsCriterion, NotEqualsCriterion,
+ sealed interface SearchCriterion<E, T> permits EqualsCriterion, NotEqualsCriterion,
     InCriterion, NotInCriterion, BetweenCriterion, LikeCriterion, ContainingCriterion,
     NotContainingCriterion, GreaterThanCriterion, LessThanCriterion, IsMissingCriterion {
 

@@ -1,9 +1,9 @@
-package fr.gwen.redis_stack.qb.criterion;
+package fr.gwen.redis_stack.qb.internal;
 
 import com.redis.om.spring.metamodel.MetamodelField;
 import com.redis.om.spring.search.stream.predicates.SearchFieldPredicate;
 
-public record IsMissingCriterion<E, T>(MetamodelField<E, T> field, boolean isMissing) implements
+record IsMissingCriterion<E, T>(MetamodelField<E, T> field, boolean isMissing) implements
     SearchCriterion<E, T> {
 
   @Override

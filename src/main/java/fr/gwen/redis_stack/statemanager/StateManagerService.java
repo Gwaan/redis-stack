@@ -1,6 +1,6 @@
 package fr.gwen.redis_stack.statemanager;
 
-import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
+import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.service.AppState;
 import java.util.Optional;
 

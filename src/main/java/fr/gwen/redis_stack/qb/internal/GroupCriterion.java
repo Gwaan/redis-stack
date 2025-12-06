@@ -1,9 +1,9 @@
-package fr.gwen.redis_stack.qb.criteria;
+package fr.gwen.redis_stack.qb.internal;
 
 import fr.gwen.redis_stack.service.AppState;
 import java.util.List;
 
-public record GroupCriterion<E extends AppState<?>>(List<SearchCriteria<E>> criteria,
+record GroupCriterion<E extends AppState<?>>(List<SearchCriteria<E>> criteria,
                                                     LogicalOperator operator,
                                                     Class<E> entityClass) implements
     SearchCriteria<E> {

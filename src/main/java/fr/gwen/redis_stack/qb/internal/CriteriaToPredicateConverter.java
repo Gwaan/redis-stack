@@ -1,4 +1,4 @@
-package fr.gwen.redis_stack.qb.criteria;
+package fr.gwen.redis_stack.qb.internal;
 
 
 import com.redis.om.spring.search.stream.predicates.SearchFieldPredicate;

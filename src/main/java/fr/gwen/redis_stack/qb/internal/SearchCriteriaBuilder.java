@@ -1,22 +1,8 @@
-package fr.gwen.redis_stack.qb.criteria.builder;
+package fr.gwen.redis_stack.qb.internal;
 
 import com.redis.om.spring.metamodel.MetamodelField;
 import com.redis.om.spring.metamodel.indexed.NumericField;
 import com.redis.om.spring.metamodel.indexed.TextField;
-import fr.gwen.redis_stack.qb.criteria.GroupCriterion;
-import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
-import fr.gwen.redis_stack.qb.criteria.SimpleCriterion;
-import fr.gwen.redis_stack.qb.criterion.BetweenCriterion;
-import fr.gwen.redis_stack.qb.criterion.ContainingCriterion;
-import fr.gwen.redis_stack.qb.criterion.EqualsCriterion;
-import fr.gwen.redis_stack.qb.criterion.GreaterThanCriterion;
-import fr.gwen.redis_stack.qb.criterion.InCriterion;
-import fr.gwen.redis_stack.qb.criterion.IsMissingCriterion;
-import fr.gwen.redis_stack.qb.criterion.LessThanCriterion;
-import fr.gwen.redis_stack.qb.criterion.LikeCriterion;
-import fr.gwen.redis_stack.qb.criterion.NotContainingCriterion;
-import fr.gwen.redis_stack.qb.criterion.NotEqualsCriterion;
-import fr.gwen.redis_stack.qb.criterion.NotInCriterion;
 import fr.gwen.redis_stack.service.AppState;
 import java.util.ArrayList;
 import java.util.Arrays;

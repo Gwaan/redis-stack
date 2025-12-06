@@ -1,4 +1,4 @@
-package fr.gwen.redis_stack.qb.criterion;
+package fr.gwen.redis_stack.qb.internal;
 
 import com.redis.om.spring.metamodel.MetamodelField;
 import com.redis.om.spring.metamodel.indexed.NumericField;
@@ -6,7 +6,7 @@ import com.redis.om.spring.metamodel.indexed.TagField;
 import com.redis.om.spring.metamodel.indexed.TextField;
 import com.redis.om.spring.search.stream.predicates.SearchFieldPredicate;
 
-public record NotEqualsCriterion<E, T>(MetamodelField<E, T> field, T value) implements
+record NotEqualsCriterion<E, T>(MetamodelField<E, T> field, T value) implements
     SearchCriterion<E, T> {
 
   @Override

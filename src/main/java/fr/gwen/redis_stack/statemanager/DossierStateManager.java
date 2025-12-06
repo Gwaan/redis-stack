@@ -1,12 +1,10 @@
 package fr.gwen.redis_stack.statemanager;
 
-import com.redis.om.spring.search.stream.EntityStream;
-import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
+import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.repo.Dossier;
 import fr.gwen.redis_stack.repo.DossierRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

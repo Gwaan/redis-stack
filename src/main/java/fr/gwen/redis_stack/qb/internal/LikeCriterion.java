@@ -1,9 +1,9 @@
-package fr.gwen.redis_stack.qb.criterion;
+package fr.gwen.redis_stack.qb.internal;
 
 import com.redis.om.spring.metamodel.indexed.TextField;
 import com.redis.om.spring.search.stream.predicates.SearchFieldPredicate;
 
-public record LikeCriterion<E>(TextField<E, String> field, String pattern, LikeMode mode) implements
+record LikeCriterion<E>(TextField<E, String> field, String pattern, LikeMode mode) implements
     SearchCriterion<E, String> {
 
   @Override

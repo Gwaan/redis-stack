@@ -1,6 +1,6 @@
 package fr.gwen.redis_stack.repo.config;
 
-import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
+import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.service.AppState;
 import java.util.Collection;
 

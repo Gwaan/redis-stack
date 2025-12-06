@@ -1,7 +1,7 @@
 package fr.gwen.redis_stack.repo.config;
 
 import com.redis.om.spring.search.stream.EntityStream;
-import fr.gwen.redis_stack.qb.criteria.SearchCriteria;
+import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.service.AppState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
