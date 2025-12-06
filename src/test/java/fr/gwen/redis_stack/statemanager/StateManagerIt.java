@@ -3,8 +3,12 @@ package fr.gwen.redis_stack.statemanager;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import fr.gwen.redis_stack.model.Dossier$;
+import fr.gwen.redis_stack.model.Truc;
+import fr.gwen.redis_stack.model.Truc$;
+import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.qb.internal.SearchCriteriaBuilder;
 import fr.gwen.redis_stack.model.Dossier;
+import fr.gwen.redis_stack.repo.TrucRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +20,8 @@ public class StateManagerIt extends RedisTestBase {
 
   @Autowired
   private DossierStateManager dossierStateManager;
+  @Autowired
+  private TrucRepository trucRepository;
 
   @BeforeEach
   void setupForTest() {
@@ -68,15 +74,26 @@ public class StateManagerIt extends RedisTestBase {
     // évalué comme: status CONTAINS "DSKLDSKLDKLSQK" OR (montant BETWEEN 1.0 .. 100.0 AND status CONTAINS "RI")
     // requête redis sous jacente -> "FT.SEARCH" "idx:dossier" "(( @status:*DSKLDSKLDKLSQK*)|(( @montant:[1.0 100.0]) ( @status:*RI*)))" "LIMIT" "0" "10000" "DIALECT" "2"
     final var sc = SearchCriteriaBuilder.of(Dossier.class).or()
-        .contains(Dossier$.STATUS, "DSKLDSKLDKLSQK")
-        .nested(
-            ac -> ac.and()
-                .between(Dossier$.MONTANT, 1.0, 100.0)
-                .contains(Dossier$.STATUS, "RI"))
+        .contains(Dossier$.STATUS, "DSKLDSKLDKLSQK").nested(
+            ac -> ac.and().between(Dossier$.MONTANT, 1.0, 100.0).contains(Dossier$.STATUS, "RI"))
         .build();
 
     // WHEN
     final var result = dossierStateManager.search(sc);
+
+    // THEN
+    assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  void test_avec_truc() {
+    // GIVEN
+    final var trucToPersist = Truc.builder().id(1L).nom("machin").build();
+    trucRepository.save(trucToPersist);
+
+    // WHEN
+    final var result = trucRepository.search(
+        SearchCriteriaBuilder.of(Truc.class).contains(Truc$.NOM, "mac").build());
 
     // THEN
     assertThat(result.size()).isEqualTo(1);

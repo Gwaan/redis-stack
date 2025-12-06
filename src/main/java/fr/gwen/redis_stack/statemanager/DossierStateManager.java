@@ -3,6 +3,7 @@ package fr.gwen.redis_stack.statemanager;
 import fr.gwen.redis_stack.qb.internal.SearchCriteria;
 import fr.gwen.redis_stack.model.Dossier;
 import fr.gwen.redis_stack.repo.DossierRepository;
+import fr.gwen.redis_stack.repo.TrucRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class DossierStateManager implements StateManagerService<String, Dossier> {
 
   private final DossierRepository dossierRepository;
+  private final TrucRepository trucRepository;
 
   @Override
   public Optional<Dossier> findById(String s) {

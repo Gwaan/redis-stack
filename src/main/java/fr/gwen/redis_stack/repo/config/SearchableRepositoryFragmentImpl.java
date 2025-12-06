@@ -6,7 +6,9 @@ import fr.gwen.redis_stack.service.AppState;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class SearchableRepositoryFragmentImpl<T extends AppState<?>> implements
     SearchableRepositoryFragment<T> {
