@@ -10,11 +10,21 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@DependsOn({
+    "redisModulesClient",
+    "jedisConnectionFactory",
+    "stringRedisTemplate",
+    "redisModulesOperations",
+    "redisEnhancedMappingContext",
+    "rediSearchIndexer",
+    "streamingQueryBuilder"
+})
 // Post processor qui ajoute au proxy d'un repo redis la capacité de recherche avancée
 // cela évite de devoir déclarer deux repositories, un pour rechercher et un autre avec le repo spring data redis
 // Un repo a juste besoin d'étendre SearchableRedisRepository pour avoir accès aux méthodes
